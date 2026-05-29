@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Souly — Gabinet psychologiczno-psychoterapeutyczny · Warszawa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ───────── Tokens (driven by Tweaks via inline style on :root) ───────── */
+:root{
+  --beige-50:#F7F1E3;
+  --beige-100:#EFE6D2;
+  --beige-200:#E4D7BC;
+  --beige-300:#D6C5A2;
+  --beige-line:rgba(31,42,68,.12);
+  --olive:#5C6B3C;
+  --olive-soft:#8A9667;
+  --navy:#1F2A44;
+  --navy-soft:#3A4666;
+  --ink:#1B2235;
+  --muted:rgba(27,34,53,.62);
+
+  --bg:var(--beige-50);
+  --paper:var(--beige-100);
+  --paper-deep:var(--beige-200);
+
+  --serif:"Bodoni Moda", "Times New Roman", serif;
+  --sans:"Mulish", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --container: 1200px;
+  --gutter: clamp(20px, 4vw, 56px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#0a0d18;
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+::selection{background:var(--olive);color:var(--beige-50)}
+
+.container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+
+/* ───────── Cinematic video background ───────── */
+.video-bg{
+  position:fixed;inset:0;z-index:0;overflow:hidden;
+  background:#0a0d18;
+  pointer-events:none;
+  transform:translateZ(0);
+  will-change:transform;
+}
+.video-bg video{
+  width:100%;height:100%;object-fit:cover;display:block;
+  opacity:0;
+  transition:opacity 1.4s ease;
+}
+.video-bg.ready video{opacity:1}
+
+/* Beige tint that fades in to convert video → background (after intro ends) */
+.tint-overlay{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:var(--bg);
+  opacity:0;
+  transition:opacity 3.6s ease;
+  transform:translateZ(0);
+}
+.intro-done .tint-overlay{opacity:.88}
+
+/* Subtle vignette to make intro feel cinematic */
+.video-bg::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.35) 100%);
+  opacity:.6;
+  transition:opacity 3.6s ease;
+}
+.intro-done .video-bg::after{opacity:0}
+
+/* ───────── Nav ───────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  padding:18px var(--gutter);
+  display:flex;align-items:center;justify-content:space-between;
+}
+/* Soft scrim as a separate layer so it can fade in via OPACITY
+   (gradients themselves can't be transitioned). Transparent during the
+   intro, then eases in once content appears, and stays constant after. */
+.nav::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(to bottom,
+    rgba(247,241,227,.82) 0%,
+    rgba(247,241,227,.55) 46%,
+    rgba(247,241,227,0) 100%);
+  opacity:0;
+  transition:opacity 2s ease;
+}
+.loaded .nav::before{opacity:1}
+.nav.scrolled{
+  /* intentionally no change — bar looks identical at top vs scrolled */
+}
+.brand{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--serif);font-size:27px;font-style:italic;letter-spacing:.01em;color:var(--navy);
+  white-space:nowrap;
+}
+.brand-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--olive);
+  box-shadow:0 0 0 4px rgba(92,107,60,.12);
+}
+.brand i{font-style:italic;font-weight:400;color:var(--navy)}
+.nav-links{
+  display:flex;gap:36px;font-size:13.5px;font-weight:500;letter-spacing:.02em;
+  color:var(--navy-soft);
+}
+.nav-links a{position:relative;padding:6px 0;white-space:nowrap}
+.nav-links a::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--olive);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s ease;
+}
+.nav-links a:hover{color:var(--navy)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{
+  padding:13px 26px;border-radius:999px;
+  background:var(--navy);color:var(--beige-50);
+  font-size:15px;font-weight:600;letter-spacing:.02em;
+  transition:background .25s, transform .25s;
+}
+.nav-cta:hover{background:var(--olive);transform:translateY(-1px)}
+@media(max-width:760px){.nav-links{display:none}}
+
+/* ───────── Hero ───────── */
+.hero{
+  position:relative;z-index:2;
+  min-height:100vh;
+  padding:160px var(--gutter) 100px;
+  display:flex;align-items:center;
+  overflow:hidden;
+}
+.hero{
+  position:relative;z-index:2;
+  min-height:100vh;
+  padding:104px var(--gutter) 60px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-text{max-width:940px;width:100%;margin:0 auto;text-align:center;
+  display:flex;flex-direction:column;align-items:center}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:11.5px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--olive);
+}
+.eyebrow::before,.eyebrow::after{
+  content:"";width:28px;height:1px;background:var(--olive);
+}
+
+.hero h1{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size: clamp(32px, 4.6vw, 58px);
+  line-height:1.08;
+  letter-spacing:-.01em;
+  color:var(--navy);
+  margin:22px 0 28px;
+  text-wrap:balance;
+}
+.hero h1 .it{font-style:italic;color:var(--olive)}
+.hero p.lead{
+  font-size:clamp(16px, 1.4vw, 19px);
+  color:var(--muted);
+  max-width:580px;line-height:1.65;
+  margin:0 auto 38px;
+}
+.hero-cta-row{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 26px;border-radius:999px;
+  font-size:14px;font-weight:600;letter-spacing:.02em;
+  transition:transform .25s, background .25s, color .25s, box-shadow .25s;
+}
+.btn-primary{background:var(--navy);color:var(--beige-50)}
+.btn-primary:hover{background:var(--olive);transform:translateY(-2px);box-shadow:0 16px 30px -16px rgba(92,107,60,.6)}
+.btn-ghost{color:var(--navy);padding:14px 0}
+.btn-ghost svg{transition:transform .25s}
+.btn-ghost:hover svg{transform:translateX(4px)}
+
+.hero-meta{
+  display:flex;gap:48px;margin-top:60px;justify-content:center;
+  padding-top:28px;border-top:1px solid var(--beige-line);
+  max-width:560px;
+}
+.hero-meta div{display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center}
+.hero-meta .k{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--olive)}
+.hero-meta .v{font-family:var(--serif);font-size:22px;color:var(--navy)}
+.hero-place{
+  margin-top:42px;font-size:14.5px;letter-spacing:.04em;color:var(--muted);
+  display:flex;align-items:center;gap:10px;
+}
+.hero-place svg{color:var(--olive);flex:0 0 16px}
+
+/* Hero visual — organic shape + portrait slot */
+.hero-visual{
+  position:relative;aspect-ratio:4/5;
+  max-width:520px;justify-self:end;width:100%;
+}
+@media(max-width:1080px){.hero-visual{justify-self:center;max-width:420px}}
+
+.hero-blob{
+  position:absolute;inset:-8% -10% -4% 0%;
+  background:
+    radial-gradient(circle at 30% 30%, var(--olive-soft) 0%, transparent 55%),
+    radial-gradient(circle at 70% 70%, var(--olive) 0%, transparent 60%),
+    var(--beige-200);
+  border-radius:62% 38% 54% 46% / 48% 56% 44% 52%;
+  filter:blur(.3px);
+  animation:blob 18s ease-in-out infinite alternate;
+  opacity:.55;
+}
+@keyframes blob{
+  0%{border-radius:62% 38% 54% 46% / 48% 56% 44% 52%}
+  100%{border-radius:42% 58% 38% 62% / 56% 44% 62% 38%}
+}
+.hero-portrait{
+  position:absolute;inset:6% 4% 4% 6%;
+  border-radius:280px 280px 200px 200px / 320px 320px 180px 180px;
+  background:
+    repeating-linear-gradient(45deg, rgba(31,42,68,.06) 0 1px, transparent 1px 14px),
+    linear-gradient(180deg, var(--beige-200), var(--beige-300));
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow: 0 30px 60px -30px rgba(31,42,68,.25);
+}
+.hero-portrait::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 55%, rgba(31,42,68,.08));
+}
+.portrait-label{
+  position:relative;z-index:1;
+  font-family:ui-monospace, "SF Mono", Menlo, monospace;
+  font-size:11px;color:var(--navy);opacity:.55;
+  text-transform:uppercase;letter-spacing:.16em;
+  text-align:center;line-height:1.6;
+}
+.hero-stamp{
+  position:absolute;left:-26px;bottom:24px;
+  width:120px;height:120px;border-radius:50%;
+  border:1px solid var(--olive);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--olive);font-family:var(--serif);font-style:italic;font-size:15px;
+  background:var(--beige-50);
+  animation:spin 28s linear infinite;
+}
+.hero-stamp svg{position:absolute;inset:0;width:100%;height:100%}
+.hero-stamp .core{
+  position:absolute;width:8px;height:8px;background:var(--olive);border-radius:50%;
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ───────── Section primitives ───────── */
+section{padding:clamp(80px, 11vw, 160px) 0;position:relative}
+.section-eyebrow{
+  display:flex;align-items:center;gap:14px;
+  font-size:11.5px;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--olive);margin-bottom:18px;
+}
+.section-eyebrow .num{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:14px;letter-spacing:0;color:var(--navy);opacity:.6;
+}
+.section-eyebrow::before{content:"";flex:0 0 28px;height:1px;background:var(--olive)}
+.section-title{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(36px, 5vw, 64px);line-height:1.05;letter-spacing:-.005em;
+  color:var(--navy);max-width:880px;
+}
+.section-title .it{font-style:italic;color:var(--olive)}
+.section-lead{
+  font-size:clamp(16px,1.25vw,18px);color:var(--muted);
+  max-width:620px;margin-top:24px;line-height:1.7;
+}
+
+/* All sections sit above the fixed video+tint.
+   Beige sections stay transparent so the frozen last frame of the intro
+   shows faintly + uniformly behind the whole page (no brightness jumps). */
+section, footer, .nav { position:relative; z-index:2 }
+section, footer { background: transparent }
+.approach { background: var(--paper) }
+.sessions { background: var(--navy) }
+
+/* ───────── About ───────── */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px);
+  margin-top:70px;align-items:start;
+}
+@media(max-width:860px){.about-grid{grid-template-columns:1fr}}
+.about-card{
+  background:var(--paper);
+  border:1px solid var(--beige-line);
+  border-radius:24px;
+  padding:36px;
+}
+.about-card h3{
+  font-family:var(--serif);font-weight:400;font-size:28px;color:var(--navy);
+  margin-bottom:16px;
+}
+.about-card p{color:var(--muted);font-size:15.5px;line-height:1.75;margin-bottom:14px}
+.about-card p:last-child{margin-bottom:0}
+.about-card .quote{
+  font-family:var(--serif);font-style:italic;font-size:22px;line-height:1.45;
+  color:var(--navy);margin-top:8px;padding-left:18px;
+  border-left:2px solid var(--olive);
+}
+
+.cred-list{display:flex;flex-direction:column;gap:14px;margin-top:28px}
+.cred-list li{list-style:none;display:flex;gap:16px;align-items:baseline;font-size:14.5px;color:var(--navy-soft)}
+.cred-list .yr{font-family:var(--serif);font-style:italic;color:var(--olive);min-width:60px}
+
+/* ───────── Notice banner (online-only period) ───────── */
+.notice{
+  margin-top:60px;
+  padding:28px 32px;
+  background:var(--paper);
+  border:1px solid var(--beige-line);
+  border-left:3px solid var(--olive);
+  border-radius:16px;
+  display:flex;gap:22px;align-items:flex-start;
+}
+.notice .badge{
+  flex:0 0 auto;
+  font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--olive);padding:6px 10px;border:1px solid var(--olive);border-radius:999px;
+  margin-top:2px;white-space:nowrap;
+}
+.notice p{font-size:15.5px;color:var(--navy);line-height:1.65;margin:0}
+.notice p b{color:var(--navy);font-weight:600}
+@media(max-width:560px){.notice{flex-direction:column;gap:14px}}
+
+/* ───────── Team ───────── */
+.team-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);
+  margin-top:70px;
+}
+@media(max-width:860px){.team-grid{grid-template-columns:1fr}}
+.team-card{
+  background:var(--paper);border:1px solid var(--beige-line);
+  border-radius:24px;overflow:hidden;display:flex;flex-direction:column;
+}
+.team-photo{
+  aspect-ratio:4/5;width:100%;background:var(--beige-200);
+  position:relative;overflow:hidden;
+}
+.team-photo img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.95);
+  transition:transform 8s ease;
+}
+.team-card:hover .team-photo img{transform:scale(1.04)}
+.team-photo::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 60%, rgba(31,42,68,.18));
+  pointer-events:none;
+}
+.team-body{padding:32px 34px 34px;display:flex;flex-direction:column;gap:14px}
+.team-role{
+  font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--olive);
+}
+.team-name{
+  font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.1;color:var(--navy);
+  letter-spacing:-.005em;
+}
+.team-bio{font-size:14.5px;color:var(--muted);line-height:1.7;margin-top:4px}
+.team-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.team-tag{
+  font-size:11.5px;color:var(--navy);padding:5px 12px;
+  background:var(--bg);border:1px solid var(--beige-line);border-radius:999px;
+}
+
+/* ───────── Podejście ───────── */
+.approach{background:var(--paper);}
+.pillars{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  margin-top:80px;background:var(--beige-line);
+  border:1px solid var(--beige-line);border-radius:24px;overflow:hidden;
+}
+@media(max-width:860px){.pillars{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.pillars{grid-template-columns:1fr}}
+.pillar{background:var(--paper);padding:36px 30px;min-height:260px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:20px;
+  transition:background .3s ease;
+}
+.pillar:hover{background:var(--beige-50)}
+.pillar .num{
+  font-family:var(--serif);font-style:italic;font-size:18px;color:var(--olive);
+}
+.pillar h4{
+  font-family:var(--serif);font-weight:400;font-size:26px;color:var(--navy);line-height:1.15;
+}
+.pillar p{font-size:14px;color:var(--muted);line-height:1.65}
+
+/* ───────── Obszary pracy ───────── */
+.areas-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  margin-top:60px;
+}
+@media(max-width:760px){.areas-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.areas-grid{grid-template-columns:1fr}}
+.area{
+  padding:22px 24px;border:1px solid var(--beige-line);border-radius:14px;
+  display:flex;align-items:center;gap:14px;
+  background:var(--bg);transition:all .25s ease;
+}
+.area:hover{background:var(--paper);border-color:var(--olive);transform:translateY(-2px)}
+.area .dot{width:8px;height:8px;border-radius:50%;background:var(--olive);flex:0 0 8px}
+.area span{font-size:15px;color:var(--navy);font-weight:500}
+
+/* ───────── Sesje / Cennik ───────── */
+.sessions{background:var(--navy);color:var(--beige-50);position:relative;overflow:hidden}
+.sessions .section-eyebrow{color:var(--beige-300)}
+.sessions .section-eyebrow::before{background:var(--beige-300)}
+.sessions .section-eyebrow .num{color:var(--beige-200);opacity:.7}
+.sessions .section-title{color:var(--beige-50)}
+.sessions .section-title .it{color:var(--beige-300)}
+.sessions .section-lead{color:rgba(247,241,227,.7)}
+
+.sessions::before{
+  content:"";position:absolute;right:-200px;top:-200px;width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(138,150,103,.2), transparent 70%);
+  pointer-events:none;
+}
+
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:70px;
+}
+@media(max-width:860px){.pricing-grid{grid-template-columns:1fr}}
+.price-card{
+  padding:36px 32px;border-radius:20px;
+  background:rgba(247,241,227,.06);
+  border:1px solid rgba(247,241,227,.14);
+  display:flex;flex-direction:column;gap:18px;
+  transition:all .3s ease;
+}
+.price-card:hover{background:rgba(247,241,227,.1);border-color:rgba(247,241,227,.3);transform:translateY(-4px)}
+.price-card.featured{
+  background:var(--beige-50);color:var(--navy);border-color:transparent;
+}
+.price-card .name{font-family:var(--serif);font-style:italic;font-size:24px;line-height:1.1}
+.price-card .meta{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.65}
+.price-card .amount{font-family:var(--serif);font-size:54px;font-weight:400;line-height:1;letter-spacing:-.02em}
+.price-card .amount sub{font-family:var(--sans);font-size:13px;font-weight:500;opacity:.6;vertical-align:baseline;margin-left:6px}
+.price-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;font-size:14px;margin-top:8px;opacity:.85}
+.price-card li{display:flex;align-items:flex-start;gap:10px}
+.price-card li::before{content:"";flex:0 0 6px;height:6px;border-radius:50%;background:currentColor;margin-top:8px;opacity:.5}
+.price-card.featured li::before{background:var(--olive)}
+
+/* ───────── Kontakt ───────── */
+.contact{padding-bottom:80px}
+.contact-wrap{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:60px;
+  margin-top:70px;align-items:start;
+}
+@media(max-width:860px){.contact-wrap{grid-template-columns:1fr;gap:30px}}
+.contact-card{
+  background:var(--paper);border-radius:24px;padding:44px;
+  border:1px solid var(--beige-line);
+}
+.contact-row{
+  display:flex;align-items:flex-start;gap:18px;padding:22px 0;
+  border-bottom:1px solid var(--beige-line);
+}
+.contact-row:last-child{border-bottom:0}
+.contact-row .ic{
+  width:42px;height:42px;border-radius:12px;
+  background:var(--bg);display:flex;align-items:center;justify-content:center;
+  color:var(--olive);flex:0 0 42px;
+}
+.contact-row .lbl{font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.contact-row .val{font-family:var(--serif);font-size:22px;color:var(--navy);line-height:1.2;margin-top:4px}
+.contact-row a:hover .val{color:var(--olive)}
+
+.contact-form{display:flex;flex-direction:column;gap:18px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.field input,.field textarea{
+  font:inherit;color:var(--navy);
+  background:var(--paper);border:1px solid var(--beige-line);
+  padding:14px 16px;border-radius:12px;
+  transition:border-color .25s, background .25s;
+}
+.field textarea{min-height:120px;resize:vertical;font-family:inherit}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--olive);background:var(--beige-50)}
+
+/* ───────── Footer ───────── */
+footer{
+  border-top:1px solid var(--beige-line);
+  padding:36px var(--gutter);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+  font-size:13px;color:var(--muted);
+}
+footer .brand{font-size:18px}
+
+/* ───────── Entrance animations (slow, after intro) ───────── */
+.reveal-word{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .05em}
+.reveal-word > span{display:inline-block;transform:translateY(110%);opacity:0;
+  transition:transform 2.2s cubic-bezier(.2,.7,.2,1), opacity 2.2s ease;
+  transition-delay: calc(var(--w,0) * 320ms);
+}
+.loaded .reveal-word > span{transform:translateY(0);opacity:1}
+
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity 2.2s ease, transform 2.2s cubic-bezier(.2,.7,.2,1)}
+.loaded .fade-up{opacity:1;transform:none}
+
+.fade-in{opacity:0;transition:opacity 2.4s ease}
+.loaded .fade-in{opacity:1}
+
+/* stagger via custom property */
+.loaded .stagger > *{transition-delay: calc(var(--i,0) * 200ms + .8s)}
+
+/* scroll reveal */
+.scroll-reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1)}
+.scroll-reveal.in{opacity:1;transform:none}
+.scroll-reveal.stagger > *{opacity:0;transform:translateY(20px);
+  transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1);
+  transition-delay:calc(var(--i,0) * 70ms);
+}
+.scroll-reveal.in.stagger > *{opacity:1;transform:none}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition-duration:.01ms !important;transition-delay:0s !important}
+  .scroll-reveal,.fade-up,.fade-in,.reveal-word > span,.hero-visual{opacity:1 !important;transform:none !important}
+}
+</style>
+</head>
+<body>
+
+<!-- Cinematic video background + tint overlay -->
+<div class="video-bg" id="videoBg" aria-hidden="true">
+  <video id="bgVideo" autoplay muted playsinline preload="auto">
+    <source src="assets/hero-bg.mp4" type="video/mp4" />
+  </video>
+</div>
+<div class="tint-overlay" aria-hidden="true"></div>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <a href="#top" class="brand fade-in">
+    <span class="brand-dot"></span>
+    <span>Souly</span>
+  </a>
+  <div class="nav-links fade-in" style="transition-delay:.2s">
+    <a href="#o-nas">O nas</a>
+    <a href="#zespol">Zespół</a>
+    <a href="#podejscie">Podejście</a>
+    <a href="#uslugi">Usługi</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+  <a href="Rejestracja.html" class="nav-cta fade-in" style="transition-delay:.3s">Umów wizytę</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-text">
+    <div class="eyebrow fade-up">Gabinet psychologiczno-psychoterapeutyczny</div>
+
+    <h1>
+      <span class="reveal-word" style="--w:0"><span>Bezpieczna</span></span>
+      <span class="reveal-word" style="--w:1"><span>przestrzeń,</span></span>
+      <span class="reveal-word" style="--w:2"><span>w&nbsp;której</span></span>
+      <br/>
+      <span class="reveal-word" style="--w:3"><span class="it">zmiana</span></span>
+      <span class="reveal-word" style="--w:4"><span class="it">staje się możliwa.</span></span>
+    </h1>
+
+    <p class="lead fade-up" style="transition-delay:1.9s">
+      Wspieramy dzieci, młodzież i&nbsp;dorosłych w&nbsp;budowaniu życia
+      w&nbsp;zgodzie z&nbsp;własnymi wartościami. Pracujemy w&nbsp;nurcie terapii
+      poznawczo-behawioralnej trzeciej fali, integrując uważność i&nbsp;akceptację.
+    </p>
+
+    <div class="hero-cta-row fade-up" style="transition-delay:2.3s">
+      <a href="Rejestracja.html" class="btn btn-primary">Umów wizytę online →</a>
+      <a href="#podejscie" class="btn btn-ghost">
+        Poznaj nasze podejście
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="hero-meta fade-up" style="transition-delay:2.6s">
+      <div><span class="k">Nurt</span><span class="v">CBT trzeciej&nbsp;fali</span></div>
+      <div><span class="k">Sesje</span><span class="v">50 min</span></div>
+      <div><span class="k">Format</span><span class="v">Online · stacjonarnie</span></div>
+    </div>
+
+    <div class="hero-place fade-up" style="transition-delay:2.85s">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Warszawa, Wola · ul. Jana Długosza 10/22
+    </div>
+  </div>
+</header>
+
+<!-- O MNIE -->
+<section id="o-nas">
+  <div class="container">
+    <div class="scroll-reveal">
+      <div class="section-eyebrow">O nas</div>
+      <h2 class="section-title">Kameralny gabinet —<br/><span class="it">i&nbsp;przede wszystkim ludzie.</span></h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card scroll-reveal">
+        <p>
+          <i>Souly</i> to kameralny gabinet psychologiczno-psychoterapeutyczny
+          prowadzony przez dyplomowaną psycholożkę i&nbsp;psychoterapeutkę
+          w&nbsp;trakcie szkolenia.
+        </p>
+        <p>
+          Wspieramy dzieci, młodzież i&nbsp;dorosłych, prowadząc diagnozę
+          i&nbsp;procesy terapeutyczne w&nbsp;oparciu o&nbsp;zweryfikowane narzędzia
+          psychologiczne — w&nbsp;nurcie terapii poznawczo-behawioralnej trzeciej
+          fali, integrując podejścia oparte na uważności i&nbsp;akceptacji.
+        </p>
+        <p>
+          Tworzymy bezpieczną i&nbsp;profesjonalną przestrzeń, w&nbsp;której
+          możliwe staje się zatrzymanie, zrozumienie i&nbsp;wprowadzenie
+          realnych, trwałych zmian.
+        </p>
+        <div class="quote">„Pomiędzy bodźcem i&nbsp;reakcją jest przestrzeń — w&nbsp;tej przestrzeni leży wolność i&nbsp;moc wyboru naszej odpowiedzi.”<br/><span style="font-style:normal;font-size:13px;color:var(--muted);letter-spacing:.04em">— Viktor E. Frankl</span></div>
+      </div>
+
+      <div class="scroll-reveal">
+        <h3 class="section-title" style="font-size:32px;line-height:1.15">Fundament<br/>naszej pracy</h3>
+        <ul class="cred-list">
+          <li><span class="yr">CBT</span><span>Terapia poznawczo-behawioralna trzeciej fali — oparta na dowodach</span></li>
+          <li><span class="yr">ACT</span><span>Terapia akceptacji i&nbsp;zaangażowania (Steven&nbsp;C.&nbsp;Hayes)</span></li>
+          <li><span class="yr">MBCT</span><span>Terapia poznawcza oparta na uważności (mindfulness)</span></li>
+          <li><span class="yr">NVC</span><span>Porozumienie bez Przemocy wg Marshalla Rosenberga</span></li>
+          <li><span class="yr">stale</span><span>Superwizja własna · standardy etyki zawodowej</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="notice scroll-reveal">
+      <span class="badge">Ważna informacja</span>
+      <p>
+        Ze względu na remont gabinetu, <b>do końca czerwca 2026 roku</b>
+        prowadzimy konsultacje i&nbsp;psychoterapię wyłącznie online.
+        Przyjmujemy zapisy na konsultacje stacjonarne od
+        <b>1 lipca 2026</b>, w&nbsp;nowym gabinecie przy ul.&nbsp;Jana&nbsp;Długosza&nbsp;10/22
+        (Warszawa Wola, stacja metra Młynów).
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ZESPÓŁ -->
+<section id="zespol">
+  <div class="container">
+    <div class="scroll-reveal">
+      <div class="section-eyebrow">Zespół</div>
+      <h2 class="section-title">Pracujemy w&nbsp;różnych nurtach,<br/><span class="it">łączy nas fundament.</span></h2>
+      <p class="section-lead">Podejście do psychoterapii oparte na dowodach (<i>evidence-based approach</i>), uważność, zaangażowanie i&nbsp;autentyczność w&nbsp;pracy z&nbsp;pacjentami.</p>
+    </div>
+
+    <div class="team-grid scroll-reveal stagger">
+      <article class="team-card" style="--i:0">
+        <div class="team-photo">
+          <img src="assets/team-anna.png" alt="Anna Szarek-Bielawska — psycholożka i psychoterapeutka" loading="lazy"/>
+        </div>
+        <div class="team-body">
+          <div class="team-role">Psycholożka · Psychoterapeutka</div>
+          <h3 class="team-name">Anna Szarek-Bielawska</h3>
+          <p class="team-bio">
+            Prowadzę konsultacje psychologiczne i&nbsp;psychoterapię dzieci,
+            młodzieży i&nbsp;dorosłych. Pomagam rodzicom zrozumieć emocje ich
+            dzieci oraz odkryć potrzeby, które kryją się za zachowaniem.
+            Absolwentka psychologii oraz studiów podyplomowych „Uważność
+            i&nbsp;współczucie” na Uniwersytecie SWPS; psychoterapeutka
+            w&nbsp;trakcie szkolenia w&nbsp;Szkole Psychoterapii
+            Poznawczo-Behawioralnej SWPS.
+          </p>
+          <div class="team-tags">
+            <span class="team-tag">Dzieci i&nbsp;młodzież</span>
+            <span class="team-tag">Dorośli</span>
+            <span class="team-tag">Mindfulness</span>
+            <span class="team-tag">Wsparcie rodziców</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="team-card" style="--i:1">
+        <div class="team-photo">
+          <img src="assets/team-agnieszka.png" alt="Agnieszka Stelmach — konsultacje dla rodziców" loading="lazy"/>
+        </div>
+        <div class="team-body">
+          <div class="team-role">Pedagog · Konsultantka rodzicielska</div>
+          <h3 class="team-name">Agnieszka Stelmach</h3>
+          <p class="team-bio">
+            Prowadzę konsultacje dla rodziców. Z&nbsp;wykształcenia jestem
+            pedagogiem, nauczycielem Montessori. W&nbsp;pracy z&nbsp;dziećmi
+            wykorzystuję pedagogikę Marii Montessori, komunikację opartą
+            na wartościach NVC oraz rodzicielstwo bliskości.
+            Wspieram rodziców w&nbsp;atmosferze ciepła, szacunku
+            i&nbsp;zrozumienia.
+          </p>
+          <div class="team-tags">
+            <span class="team-tag">Rodzicielstwo bliskości</span>
+            <span class="team-tag">Montessori</span>
+            <span class="team-tag">NVC</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- PODEJŚCIE -->
+<section id="podejscie" class="approach">
+  <div class="container">
+    <div class="scroll-reveal">
+      <div class="section-eyebrow">Podejście</div>
+      <h2 class="section-title">Cztery rzeczy, które obiecujemy<br/><span class="it">zanim siądziemy naprzeciw siebie.</span></h2>
+    </div>
+
+    <div class="pillars scroll-reveal stagger">
+      <div class="pillar" style="--i:0">
+        <div class="num">— I.</div>
+        <h4>Oparte na dowodach</h4>
+        <p>Pracujemy w&nbsp;nurcie CBT trzeciej fali — metodami zweryfikowanymi naukowo, dopasowanymi do Twoich potrzeb.</p>
+      </div>
+      <div class="pillar" style="--i:1">
+        <div class="num">— II.</div>
+        <h4>Uważność i&nbsp;akceptacja</h4>
+        <p>Uważność tworzy przestrzeń między bodźcem a&nbsp;reakcją — w&nbsp;tej przestrzeni pojawia się możliwość wyboru.</p>
+      </div>
+      <div class="pillar" style="--i:2">
+        <div class="num">— III.</div>
+        <h4>Pełna poufność</h4>
+        <p>Wszystkie rozmowy objęte są tajemnicą zawodową. Bezpieczeństwo jest fundamentem tej pracy.</p>
+      </div>
+      <div class="pillar" style="--i:3">
+        <div class="num">— IV.</div>
+        <h4>Twoje tempo</h4>
+        <p>Proces psychoterapii, jego tempo i&nbsp;długość dostosowujemy indywidualnie do Twoich potrzeb.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OBSZARY -->
+<section id="obszary">
+  <div class="container">
+    <div class="scroll-reveal">
+      <div class="section-eyebrow">Obszary pracy</div>
+      <h2 class="section-title">Pomagamy, gdy <span class="it">życie wydaje się za ciężkie</span><br/>żeby nieść je w&nbsp;pojedynkę.</h2>
+      <p class="section-lead">Najczęściej spotykamy się w&nbsp;gabinecie wokół takich tematów:</p>
+    </div>
+
+    <div class="areas-grid scroll-reveal stagger">
+      <div class="area" style="--i:0"><span class="dot"></span><span>Stany lękowe i&nbsp;napady paniki</span></div>
+      <div class="area" style="--i:1"><span class="dot"></span><span>Depresja i&nbsp;obniżony nastrój</span></div>
+      <div class="area" style="--i:2"><span class="dot"></span><span>Przewlekły stres i&nbsp;napięcie</span></div>
+      <div class="area" style="--i:3"><span class="dot"></span><span>Trudności w&nbsp;relacjach i&nbsp;związkach</span></div>
+      <div class="area" style="--i:4"><span class="dot"></span><span>Kryzysy życiowe (rozstanie, strata, zmiana)</span></div>
+      <div class="area" style="--i:5"><span class="dot"></span><span>Niskie poczucie własnej wartości</span></div>
+      <div class="area" style="--i:6"><span class="dot"></span><span>Zaburzenia osobowości</span></div>
+      <div class="area" style="--i:7"><span class="dot"></span><span>Trudności u&nbsp;dzieci i&nbsp;młodzieży</span></div>
+      <div class="area" style="--i:8"><span class="dot"></span><span>Rozwój osobisty i&nbsp;lepsze poznanie siebie</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- USŁUGI / CENNIK -->
+<section id="uslugi" class="sessions">
+  <div class="container">
+    <div class="scroll-reveal">
+      <div class="section-eyebrow">Usługi i&nbsp;cennik</div>
+      <h2 class="section-title">Wsparcie zdrowia psychicznego — <span class="it">oparte na wiedzy naukowej.</span></h2>
+      <p class="section-lead">Każda sesja trwa 50 minut. Psychoterapia odbywa się regularnie, zazwyczaj raz w&nbsp;tygodniu. Do końca czerwca 2026 — wyłącznie online.</p>
+    </div>
+
+    <div class="pricing-grid scroll-reveal stagger">
+      <div class="price-card" style="--i:0">
+        <div class="meta">Pierwsze spotkanie</div>
+        <div class="name">Konsultacja psychologiczna</div>
+        <div class="amount">250<sub>zł / 50 min</sub></div>
+        <ul>
+          <li>Zrozumienie Twojej sytuacji i&nbsp;potrzeb</li>
+          <li>Wspólne określenie celów dalszej pracy</li>
+          <li>Bez zobowiązań — decyzja po spotkaniu</li>
+          <li>Online lub stacjonarnie (od&nbsp;lipca&nbsp;2026)</li>
+        </ul>
+      </div>
+      <div class="price-card featured" style="--i:1">
+        <div class="meta">Najczęściej wybierana</div>
+        <div class="name">Psychoterapia indywidualna</div>
+        <div class="amount">250<sub>zł / 50 min</sub></div>
+        <ul>
+          <li>Dorośli, młodzież lub dzieci</li>
+          <li>Stałe miejsce w&nbsp;tygodniu</li>
+          <li>Częstotliwość: zazwyczaj 1× w&nbsp;tygodniu</li>
+          <li>Online lub stacjonarnie</li>
+        </ul>
+      </div>
+      <div class="price-card" style="--i:2">
+        <div class="meta">Diagnoza</div>
+        <div class="name">Badania psychologiczne</div>
+        <div class="amount" style="font-size:36px">cena indywidualna</div>
+        <ul>
+          <li>Standaryzowane testy + wywiad</li>
+          <li>Diagnoza funkcjonowania poznawczego i&nbsp;emocjonalnego</li>
+          <li>Pisemna opinia psychologiczna</li>
+          <li>Zakres dopasowany do celu badania</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" class="contact">
+  <div class="container">
+    <div class="scroll-reveal">
+      <div class="section-eyebrow">Kontakt</div>
+      <h2 class="section-title">Pierwszy krok bywa najtrudniejszy.<br/><span class="it">Możesz zrobić go teraz.</span></h2>
+      <p class="section-lead">Jeśli jest w&nbsp;Tobie zainteresowanie konsultacjami psychologicznymi lub psychoterapią — napisz. Odezwiemy się w&nbsp;ciągu 24 godzin.</p>
+    </div>
+
+    <div class="contact-wrap">
+      <div class="contact-card scroll-reveal">
+        <a href="tel:+48787932000">
+          <div class="contact-row">
+            <div class="ic">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.35 1.85.6 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="lbl">Telefon</div>
+              <div class="val">+48 787 932 000</div>
+            </div>
+          </div>
+        </a>
+        <a href="mailto:kontakt@souly-psychoterapia.pl">
+          <div class="contact-row">
+            <div class="ic">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+            </div>
+            <div>
+              <div class="lbl">E-mail</div>
+              <div class="val">kontakt@souly-psychoterapia.pl</div>
+            </div>
+          </div>
+        </a>
+        <div class="contact-row">
+          <div class="ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="lbl">Gabinet</div>
+            <div class="val">ul. Jana Długosza 10 m. 22<br/>Warszawa, Wola · metro Młynów</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="lbl">Konsultacje</div>
+            <div class="val">Online — do czerwca 2026<br/>Stacjonarnie — od lipca 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form scroll-reveal" onsubmit="event.preventDefault(); this.querySelector('.btn').textContent='Dziękuję, odezwę się wkrótce ✓';">
+        <div class="field">
+          <label>Imię</label>
+          <input type="text" placeholder="Jak się do Ciebie zwracać?" required />
+        </div>
+        <div class="field">
+          <label>Kontakt</label>
+          <input type="text" placeholder="E-mail lub numer telefonu" required />
+        </div>
+        <div class="field">
+          <label>Wiadomość</label>
+          <textarea placeholder="Kilka zdań o tym, z czym przychodzisz…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="align-self:flex-start;background:var(--olive)">
+          Wyślij wiadomość →
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <span class="brand-dot"></span>
+    <span style="font-family:var(--serif);font-size:21px;font-style:italic;color:var(--navy);margin-left:10px">Souly</span>
+  </div>
+  <div>© 2026 · wszystkie prawa zastrzeżone · <a href="#top" style="color:var(--olive)">↑ wróć na górę</a></div>
+</footer>
+
+<!-- Tweaks defaults block -->
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "warm-classic",
+  "animation": "graceful",
+  "tintIntensity": 0.88,
+  "videoSpeed": 0.85
+}/*EDITMODE-END*/;
+</script>
+
+<!-- Vanilla JS: video intro + scroll reveals + nav -->
+<script>
+(function(){
+  const nav = document.getElementById('nav');
+  const videoBg = document.getElementById('videoBg');
+  const video = document.getElementById('bgVideo');
+
+  // Slow the video down slightly (cinematic feel)
+  const setSpeed = (rate) => { try { video.playbackRate = rate; } catch(e){} };
+  setSpeed(window.__currentVideoSpeed || 0.85);
+  video.addEventListener('loadedmetadata', () => setSpeed(window.__currentVideoSpeed || 0.85));
+  video.addEventListener('play', () => setSpeed(window.__currentVideoSpeed || 0.85));
+
+  // Reveal video as soon as it can play; fall back after 800ms.
+  let videoShown = false;
+  const showVideo = () => {
+    if (videoShown) return;
+    videoShown = true;
+    videoBg.classList.add('ready');
+  };
+  video.addEventListener('canplay', showVideo, {once:true});
+  video.addEventListener('playing', showVideo, {once:true});
+  setTimeout(showVideo, 800);
+
+  // Intro sequence — the beige background starts fading in DURING the video
+  // (around its midpoint) so the transition overlaps with the camera motion
+  // and feels seamless, rather than starting only once the footage freezes.
+  let tintStarted = false, textShown = false;
+  const startTint = () => {
+    if (tintStarted) return;
+    tintStarted = true;
+    document.body.classList.add('intro-done'); // beige slowly fades in
+  };
+  const showText = () => {
+    if (textShown) return;
+    textShown = true;
+    startTint();
+    document.body.classList.add('loaded'); // reveal the page content
+  };
+
+  // Begin the beige fade once ~45% of the clip has played.
+  video.addEventListener('timeupdate', () => {
+    if (!video.duration) return;
+    if (video.currentTime / video.duration >= 0.38) startTint();
+  });
+  // Reveal the text when the video finishes (beige is already settled by then).
+  video.addEventListener('ended', showText, {once:true});
+
+  // Safety fallbacks: never leave the user on a blank/frozen frame.
+  video.addEventListener('error', () => { startTint(); setTimeout(showText, 600); }, {once:true});
+  setTimeout(showText, 14000); // hard cap
+
+  // Nav scroll state
+  const onScroll = () => {
+    if (window.scrollY > 20) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Scroll reveals
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
+  document.querySelectorAll('.scroll-reveal').forEach((el, i) => {
+    // assign stagger index to children that have stagger class
+    if (el.classList.contains('stagger')) {
+      Array.from(el.children).forEach((c, j) => {
+        if (!c.style.getPropertyValue('--i')) c.style.setProperty('--i', j);
+      });
+    }
+    io.observe(el);
+  });
+
+  // Apply tweaks → CSS vars
+  window.__applyTweaks = function(t){
+    const root = document.documentElement;
+    const palettes = {
+      'warm-classic': {bg:'#F7F1E3', paper:'#EFE6D2', paperDeep:'#E4D7BC', olive:'#5C6B3C', oliveSoft:'#8A9667', navy:'#1F2A44'},
+      'olive-forward':{bg:'#F2EBD7', paper:'#E8DEC1', paperDeep:'#D9CCA8', olive:'#4F5E32', oliveSoft:'#7A8757', navy:'#1A2238'},
+      'soft-cream':   {bg:'#FBF6E9', paper:'#F2EBD9', paperDeep:'#E8DEC4', olive:'#6E7C4F', oliveSoft:'#9AA77B', navy:'#28324F'},
+      'deep-navy':    {bg:'#F4EDDD', paper:'#EAE0C4', paperDeep:'#DDD0AC', olive:'#5C6B3C', oliveSoft:'#8A9667', navy:'#13192C'},
+    };
+    const p = palettes[t.palette] || palettes['warm-classic'];
+    root.style.setProperty('--beige-50', p.bg);
+    root.style.setProperty('--beige-100', p.paper);
+    root.style.setProperty('--beige-200', p.paperDeep);
+    root.style.setProperty('--olive', p.olive);
+    root.style.setProperty('--olive-soft', p.oliveSoft);
+    root.style.setProperty('--navy', p.navy);
+
+    // animation
+    if (t.animation === 'none') {
+      document.body.classList.add('no-anim');
+    } else {
+      document.body.classList.remove('no-anim');
+    }
+    const speed = {subtle:1.4, graceful:1, bold:.7}[t.animation] || 1;
+    root.style.setProperty('--anim-speed', speed);
+
+    // tint intensity (how much beige covers the video after intro)
+    const tint = document.querySelector('.tint-overlay');
+    if (tint && typeof t.tintIntensity === 'number') {
+      const css = `.intro-done .tint-overlay{opacity:${t.tintIntensity}}`;
+      let s = document.getElementById('__tint_dyn');
+      if (!s) { s = document.createElement('style'); s.id = '__tint_dyn'; document.head.appendChild(s); }
+      s.textContent = css;
+    }
+
+    // video playback rate
+    const v = document.getElementById('bgVideo');
+    if (v && typeof t.videoSpeed === 'number') {
+      window.__currentVideoSpeed = t.videoSpeed;
+      try { v.playbackRate = t.videoSpeed; } catch(e){}
+    }
+  };
+  window.__applyTweaks(TWEAK_DEFAULTS);
+})();
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks-app.jsx"></script>
+
+<div id="tweaks-root"></div>
+
+</body>
+</html>
