@@ -404,17 +404,18 @@ section, footer { background: transparent }
 @media(max-width:860px){.pillars{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.pillars{grid-template-columns:1fr}}
 .pillar{background:var(--paper);padding:36px 30px;min-height:260px;
-  display:flex;flex-direction:column;justify-content:space-between;gap:20px;
+  display:flex;flex-direction:column;
   transition:background .3s ease;
 }
 .pillar:hover{background:var(--beige-50)}
 .pillar .num{
-  font-family:var(--serif);font-style:italic;font-size:18px;color:var(--olive);
+  font-family:var(--serif);font-style:italic;font-size:18px;color:var(--olive);margin-bottom:14px;text-align:center;
 }
 .pillar h4{
-  font-family:var(--serif);font-weight:400;font-size:26px;color:var(--navy);line-height:1.15;
+  font-family:var(--serif);font-weight:400;font-size:26px;color:var(--navy);line-height:1.15;text-align:center;
 }
-.pillar p{font-size:14px;color:var(--muted);line-height:1.65}
+.pillar p{font-size:14px;color:var(--muted);line-height:1.65;
+  flex:1;display:flex;align-items:center;justify-content:center;text-align:center;margin-top:18px}
 
 /* ───────── Obszary pracy ───────── */
 .areas-grid{
@@ -498,6 +499,21 @@ section, footer { background: transparent }
 .contact-row a:hover .val{color:var(--olive)}
 
 .contact-form{display:flex;flex-direction:column;gap:18px}
+.contact-map{margin-top:30px;border-radius:24px;overflow:hidden;border:1px solid var(--beige-line);
+  position:relative;background:var(--paper);box-shadow:0 30px 60px -45px rgba(31,42,68,.4)}
+.contact-map iframe{display:block;width:100%;height:380px;border:0;
+  filter:grayscale(.28) sepia(.12) saturate(.92) contrast(.98)}
+.contact-map .map-tag{position:absolute;left:22px;top:22px;z-index:2;display:flex;align-items:center;gap:10px;
+  background:rgba(247,241,227,.94);backdrop-filter:blur(8px);border:1px solid var(--beige-line);
+  border-radius:14px;padding:12px 16px;box-shadow:0 12px 28px -18px rgba(31,42,68,.5);pointer-events:none}
+.contact-map .map-tag svg{color:var(--olive);flex:0 0 18px}
+.contact-map .map-tag .mt-lbl{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.contact-map .map-tag .mt-val{font-family:var(--serif);font-size:17px;color:var(--navy);line-height:1.2}
+.contact-map .map-dir{position:absolute;right:22px;bottom:22px;z-index:2;display:inline-flex;align-items:center;gap:8px;
+  background:var(--navy);color:var(--beige-50);font-size:13px;font-weight:600;padding:11px 18px;border-radius:999px;
+  box-shadow:0 14px 30px -16px rgba(31,42,68,.7);transition:background .25s,transform .25s}
+.contact-map .map-dir:hover{background:var(--olive);transform:translateY(-1px)}
+@media(max-width:560px){.contact-map iframe{height:300px}.contact-map .map-tag{left:14px;top:14px;padding:10px 13px}}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .field input,.field textarea{
@@ -747,23 +763,23 @@ footer .brand{font-size:18px}
     <div class="pillars scroll-reveal stagger">
       <div class="pillar" style="--i:0">
         <div class="num">— I.</div>
-        <h4>Oparte na dowodach</h4>
-        <p>Pracujemy w&nbsp;nurcie CBT trzeciej fali — metodami zweryfikowanymi naukowo, dopasowanymi do Twoich potrzeb.</p>
+        <h4>Podejście oparte na dowodach</h4>
+        <p>Pracujemy w&nbsp;nurcie CBT trzeciej fali — metodami zweryfikowanymi naukowo. Profesjonalnie łączymy rzetelną wiedzę naukową z&nbsp;praktycznym podejściem.</p>
       </div>
       <div class="pillar" style="--i:1">
         <div class="num">— II.</div>
         <h4>Uważność i&nbsp;akceptacja</h4>
-        <p>Uważność tworzy przestrzeń między bodźcem a&nbsp;reakcją — w&nbsp;tej przestrzeni pojawia się możliwość wyboru.</p>
+        <p>W&nbsp;relacji terapeutycznej kierujemy się akceptacją, odpowiedzialnością i&nbsp;ciekawością drugiego człowieka. Dbamy o&nbsp;to, aby była ona oparta na uważnej, współczującej i&nbsp;szczerej obecności.</p>
       </div>
       <div class="pillar" style="--i:2">
         <div class="num">— III.</div>
         <h4>Pełna poufność</h4>
-        <p>Wszystkie rozmowy objęte są tajemnicą zawodową. Bezpieczeństwo jest fundamentem tej pracy.</p>
+        <p>Wszystkie rozmowy objęte są tajemnicą zawodową. Bezpieczeństwo i&nbsp;zaufanie są fundamentem tej pracy.</p>
       </div>
       <div class="pillar" style="--i:3">
         <div class="num">— IV.</div>
         <h4>Twoje tempo</h4>
-        <p>Proces psychoterapii, jego tempo i&nbsp;długość dostosowujemy indywidualnie do Twoich potrzeb.</p>
+        <p>Souly to miejsce, w&nbsp;którym poczujesz się wysłuchanym, zrozumianym i&nbsp;zaakceptowanym. Miejsce, w&nbsp;którym możesz uczyć się nowych sposobów bycia ze sobą i&nbsp;z&nbsp;innymi. Zmiana potrzebuje czasu, a&nbsp;tempo pracy dostosowujemy do Ciebie.</p>
       </div>
     </div>
   </div>
@@ -774,20 +790,20 @@ footer .brand{font-size:18px}
   <div class="container">
     <div class="scroll-reveal">
       <div class="section-eyebrow">Obszary pracy</div>
-      <h2 class="section-title">Pomagamy, gdy <span class="it">życie wydaje się za ciężkie</span><br/>żeby nieść je w&nbsp;pojedynkę.</h2>
-      <p class="section-lead">Najczęściej spotykamy się w&nbsp;gabinecie wokół takich tematów:</p>
+      <h2 class="section-title">Pomagamy, gdy <span class="it">życie wydaje się za ciężkie</span>,<br/>by nieść je w&nbsp;pojedynkę.</h2>
+      <p class="section-lead">W&nbsp;gabinecie najczęściej spotykamy się z&nbsp;poniższymi trudnościami:</p>
     </div>
 
     <div class="areas-grid scroll-reveal stagger">
-      <div class="area" style="--i:0"><span class="dot"></span><span>Stany lękowe i&nbsp;napady paniki</span></div>
-      <div class="area" style="--i:1"><span class="dot"></span><span>Depresja i&nbsp;obniżony nastrój</span></div>
-      <div class="area" style="--i:2"><span class="dot"></span><span>Przewlekły stres i&nbsp;napięcie</span></div>
-      <div class="area" style="--i:3"><span class="dot"></span><span>Trudności w&nbsp;relacjach i&nbsp;związkach</span></div>
-      <div class="area" style="--i:4"><span class="dot"></span><span>Kryzysy życiowe (rozstanie, strata, zmiana)</span></div>
-      <div class="area" style="--i:5"><span class="dot"></span><span>Niskie poczucie własnej wartości</span></div>
+      <div class="area" style="--i:0"><span class="dot"></span><span>Depresja i&nbsp;obniżony nastrój</span></div>
+      <div class="area" style="--i:1"><span class="dot"></span><span>Trudności u&nbsp;dzieci i&nbsp;młodzieży</span></div>
+      <div class="area" style="--i:2"><span class="dot"></span><span>Stres i&nbsp;napięcie</span></div>
+      <div class="area" style="--i:3"><span class="dot"></span><span>Stany lękowe i&nbsp;ataki paniki</span></div>
+      <div class="area" style="--i:4"><span class="dot"></span><span>Trudności w&nbsp;relacjach i&nbsp;związkach</span></div>
+      <div class="area" style="--i:5"><span class="dot"></span><span>Obniżona samoocena</span></div>
       <div class="area" style="--i:6"><span class="dot"></span><span>Zaburzenia osobowości</span></div>
-      <div class="area" style="--i:7"><span class="dot"></span><span>Trudności u&nbsp;dzieci i&nbsp;młodzieży</span></div>
-      <div class="area" style="--i:8"><span class="dot"></span><span>Rozwój osobisty i&nbsp;lepsze poznanie siebie</span></div>
+      <div class="area" style="--i:7"><span class="dot"></span><span>Kryzysy życiowe (rozstanie, zmiana, strata)</span></div>
+      <div class="area" style="--i:8"><span class="dot"></span><span>Potrzeba rozwoju osobistego i&nbsp;lepszego poznania siebie</span></div>
     </div>
   </div>
 </section>
@@ -814,14 +830,14 @@ footer .brand{font-size:18px}
         </ul>
       </div>
       <div class="price-card featured" style="--i:1">
-        <div class="meta">Najczęściej wybierana</div>
+        <div class="meta">Regularne spotkania</div>
         <div class="name">Psychoterapia indywidualna</div>
         <div class="amount">250<sub>zł / 50 min</sub></div>
         <ul>
           <li>Dorośli, młodzież lub dzieci</li>
-          <li>Stałe miejsce w&nbsp;tygodniu</li>
+          <li>Stałe miejsce w&nbsp;grafiku</li>
           <li>Częstotliwość: zazwyczaj 1× w&nbsp;tygodniu</li>
-          <li>online lub stacjonarnie</li>
+          <li>Online lub stacjonarnie</li>
         </ul>
       </div>
       <div class="price-card" style="--i:2">
@@ -910,6 +926,24 @@ footer .brand{font-size:18px}
         </button>
       </form>
     </div>
+
+    <div class="contact-map scroll-reveal">
+      <div class="map-tag">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div>
+          <div class="mt-lbl">Gabinet Souly</div>
+          <div class="mt-val">ul. Jana Długosza 10 m. 22, Warszawa</div>
+        </div>
+      </div>
+      <iframe
+        title="Mapa — Gabinet Souly, ul. Jana Długosza 10 m. 22, Warszawa"
+        src="https://maps.google.com/maps?q=ul.%20Jana%20D%C5%82ugosza%2010%2C%20Warszawa&z=15&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      <a class="map-dir" href="https://www.google.com/maps/dir/?api=1&destination=ul.+Jana+D%C5%82ugosza+10,+Warszawa" target="_blank" rel="noopener">
+        Wyznacz trasę
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -918,7 +952,7 @@ footer .brand{font-size:18px}
     <span class="brand-dot"></span>
     <span style="font-family:var(--serif);font-size:21px;font-style:italic;color:var(--navy);margin-left:10px">Souly</span>
   </div>
-  <div>© 2026 · wszystkie prawa zastrzeżone · <a href="#top" style="color:var(--olive)">↑ wróć na górę</a></div>
+  <div>© 2026 · wszystkie prawa zastrzeżone · <a href="Polityka-prywatnosci.html" style="color:var(--olive)">Polityka prywatności</a> · <a href="#top" style="color:var(--olive)">↑ wróć na górę</a></div>
 </footer>
 
 <!-- Tweaks defaults block -->
