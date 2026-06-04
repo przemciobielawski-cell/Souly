@@ -528,11 +528,15 @@ section, footer { background: transparent }
 /* ───────── Footer ───────── */
 footer{
   border-top:1px solid var(--beige-line);
-  padding:36px var(--gutter);
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+  padding:40px var(--gutter);
+  display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;
   font-size:13px;color:var(--muted);
 }
-footer .brand{font-size:18px}
+ footer .brand{font-size:18px}
+ footer .foot-copy{font-size:13px;color:var(--muted)}
+ footer .foot-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px}
+ footer .foot-links a{color:var(--olive)}
+ footer .foot-links .sep{color:var(--beige-line)}
 
 /* ───────── Entrance animations (slow, after intro) ───────── */
 .reveal-word{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .05em}
@@ -769,17 +773,17 @@ footer .brand{font-size:18px}
       <div class="pillar" style="--i:1">
         <div class="num">— II.</div>
         <h4>Uważność i&nbsp;akceptacja</h4>
-        <p>W&nbsp;relacji terapeutycznej kierujemy się akceptacją, odpowiedzialnością i&nbsp;ciekawością drugiego człowieka. Dbamy o&nbsp;to, aby była ona oparta na uważnej, współczującej i&nbsp;szczerej obecności.</p>
+        <p>W&nbsp;relacji terapeutycznej kierujemy się akceptacją i&nbsp;ciekawością drugiego człowieka. Dbamy o&nbsp;to, by była oparta na uważnej, współczującej i&nbsp;autentycznej obecności.</p>
       </div>
       <div class="pillar" style="--i:2">
         <div class="num">— III.</div>
         <h4>Pełna poufność</h4>
-        <p>Wszystkie rozmowy objęte są tajemnicą zawodową. Bezpieczeństwo i&nbsp;zaufanie są fundamentem tej pracy.</p>
+        <p>Jesteśmy profesjonalistkami. Wszystkie rozmowy są objęte tajemnicą zawodową. Bezpieczeństwo, odpowiedzialność i&nbsp;zaufanie są fundamentem tej pracy.</p>
       </div>
       <div class="pillar" style="--i:3">
         <div class="num">— IV.</div>
         <h4>Twoje tempo</h4>
-        <p>Souly to miejsce, w&nbsp;którym poczujesz się wysłuchanym, zrozumianym i&nbsp;zaakceptowanym. Miejsce, w&nbsp;którym możesz uczyć się nowych sposobów bycia ze sobą i&nbsp;z&nbsp;innymi. Zmiana potrzebuje czasu, a&nbsp;tempo pracy dostosowujemy do Ciebie.</p>
+        <p>Souly to miejsce, w&nbsp;którym możesz uczyć się nowych sposobów bycia ze sobą i&nbsp;z&nbsp;innymi. Zmiana potrzebuje czasu, a&nbsp;tempo pracy dostosowujemy do Ciebie.</p>
       </div>
     </div>
   </div>
@@ -948,12 +952,26 @@ footer .brand{font-size:18px}
 </section>
 
 <footer>
-  <div>
+  <div class="brand">
     <span class="brand-dot"></span>
     <span style="font-family:var(--serif);font-size:21px;font-style:italic;color:var(--navy);margin-left:10px">Souly</span>
   </div>
-  <div>© 2026 · wszystkie prawa zastrzeżone · <a href="Polityka-prywatnosci.html" style="color:var(--olive)">Polityka prywatności</a> · <a href="#top" style="color:var(--olive)">↑ wróć na górę</a></div>
+  <div class="foot-copy">© 2026 Souly · Mindful Psychology Anna Szarek-Bielawska · wszystkie prawa zastrzeżone</div>
+  <div class="foot-links">
+    <a href="Polityka-prywatnosci.html">Polityka prywatności</a>
+    <span class="sep">·</span>
+    <a href="Regulamin.html">Regulamin świadczenia usług</a>
+    <span class="sep">·</span>
+    <a href="Regulamin-strony.html">Regulamin strony</a>
+    <span class="sep">·</span>
+    <a href="#" data-cookie-settings>Ustawienia plików cookies</a>
+    <span class="sep">·</span>
+    <a href="#top">↑ wróć na górę</a>
+  </div>
 </footer>
+
+<script src="cookie-consent.js"></script>
+<script src="self-test.js"></script>
 
 <!-- Tweaks defaults block -->
 <script>

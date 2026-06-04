@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+<meta name="theme-color" content="#1F2A44" />
+<title>Souly — Regulamin świadczenia usług</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --beige-50:#F7F1E3; --beige-100:#EFE6D2; --beige-200:#E4D7BC; --beige-300:#D6C5A2;
+  --beige-line:rgba(31,42,68,.12);
+  --olive:#5C6B3C; --olive-soft:#8A9667; --navy:#1F2A44; --navy-soft:#3A4666;
+  --ink:#1B2235; --muted:rgba(27,34,53,.62);
+  --serif:"Bodoni Moda","Times New Roman",serif;
+  --sans:"Mulish",ui-sans-serif,system-ui,sans-serif;
+  --gutter:clamp(20px,4vw,56px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--beige-50);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--olive);color:var(--beige-50)}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+  padding:18px var(--gutter);background:rgba(247,241,227,.9);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--beige-line)}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-size:26px;font-style:italic;color:var(--navy)}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--olive);box-shadow:0 0 0 4px rgba(92,107,60,.12)}
+.back{font-size:13.5px;color:var(--navy-soft);display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;transition:background .2s}
+.back:hover{background:var(--beige-200)}
+
+/* layout */
+.wrap{max-width:820px;margin:0 auto;padding:clamp(48px,7vw,96px) var(--gutter) clamp(60px,8vw,110px)}
+.head{margin-bottom:clamp(36px,5vw,56px)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11.5px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--olive);margin-bottom:18px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--olive)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.6vw,60px);line-height:1.04;color:var(--navy);letter-spacing:-.01em}
+.updated{margin-top:18px;font-size:13.5px;color:var(--muted)}
+.intro{margin-top:26px;font-size:clamp(16px,1.4vw,18px);color:var(--navy-soft);line-height:1.75;max-width:680px}
+
+/* divider before RODO block */
+.block-label{margin-top:clamp(40px,5vw,60px);padding-top:clamp(30px,3.5vw,40px);border-top:1px solid var(--beige-line);
+  font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--olive)}
+
+/* sections */
+section.pp{padding-top:clamp(28px,3.2vw,36px);margin-top:clamp(28px,3.2vw,36px);border-top:1px solid var(--beige-line)}
+section.pp.first{border-top:0;margin-top:clamp(8px,1vw,12px)}
+.pp h2{font-family:var(--serif);font-weight:500;font-size:clamp(22px,2.4vw,28px);color:var(--navy);line-height:1.2;
+  display:flex;gap:14px;align-items:baseline}
+.pp h2 .n{font-style:italic;font-weight:400;color:var(--olive);font-size:.82em;flex:0 0 auto}
+.pp .body{margin-top:15px;padding-left:0}
+.pp p{color:var(--ink);font-size:15.5px;line-height:1.75;margin-bottom:12px}
+.pp p:last-child{margin-bottom:0}
+.pp ul{list-style:none;display:flex;flex-direction:column;gap:9px;margin:4px 0 14px}
+.pp li{position:relative;padding-left:22px;font-size:15.5px;color:var(--ink);line-height:1.65}
+.pp li::before{content:"";position:absolute;left:2px;top:10px;width:6px;height:6px;border-radius:50%;background:var(--olive)}
+.pp a{color:var(--olive);text-decoration:underline;text-underline-offset:2px}
+.pp .sub{font-size:14px;color:var(--muted);margin:-4px 0 12px}
+
+/* highlight card (crisis info) */
+.card{background:var(--beige-100);border:1px solid var(--beige-line);border-left:3px solid var(--olive);
+  border-radius:14px;padding:20px 24px;margin-top:6px}
+.card p{font-size:15px;line-height:1.7;margin-bottom:6px;color:var(--navy)}
+.card p:last-child{margin-bottom:0}
+.card b{color:var(--navy)}
+
+/* footer */
+footer{border-top:1px solid var(--beige-line);padding:32px var(--gutter);display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);max-width:1200px;margin:0 auto}
+footer .brand{font-size:19px}
+footer a{color:var(--olive)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="brand"><span class="brand-dot"></span><span>Souly</span></a>
+  <a href="index.html" class="back">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    Powrót na stronę
+  </a>
+</div>
+
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Souly Psychoterapia</div>
+    <h1>Regulamin<br/><span style="font-style:italic;color:var(--olive)">świadczenia usług</span></h1>
+    <p class="updated">Usługi psychologiczne i&nbsp;psychoterapeutyczne · prowadzone przez Annę Szarek-Bielawską</p>
+    <p class="intro">Niniejszy regulamin określa zasady świadczenia usług psychologicznych oraz psychoterapeutycznych przez gabinet Anny Szarek-Bielawskiej, zwany dalej „Gabinetem". Dokonanie rezerwacji wizyty oznacza akceptację niniejszego regulaminu.</p>
+  </div>
+
+  <section class="pp first">
+    <h2><span class="n">§1.</span> Postanowienia ogólne</h2>
+    <div class="body">
+      <p>Niniejszy regulamin określa zasady świadczenia usług psychologicznych oraz psychoterapeutycznych przez gabinet Anny Szarek-Bielawskiej, zwany dalej „Gabinetem".</p>
+      <p>Usługi świadczone są w&nbsp;formie:</p>
+      <ul>
+        <li>konsultacji psychologicznych,</li>
+        <li>psychoterapii indywidualnej,</li>
+        <li>konsultacji online,</li>
+        <li>innych usług wskazanych w&nbsp;ofercie.</li>
+      </ul>
+      <p>Dokonanie rezerwacji wizyty oznacza akceptację niniejszego regulaminu.</p>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§2.</span> Rezerwacja wizyt</h2>
+    <div class="body">
+      <p>Rezerwacja wizyty odbywa się:</p>
+      <ul>
+        <li>telefonicznie,</li>
+        <li>wiadomością SMS,</li>
+        <li>mailowo,</li>
+        <li>za pośrednictwem formularza kontaktowego na stronie internetowej lub mediów społecznościowych,</li>
+        <li>poprzez serwis znanylekarz.pl.</li>
+      </ul>
+      <p>W&nbsp;celu potwierdzenia rezerwacji Gabinet może poprosić o&nbsp;wpłatę zadatku lub przedpłaty na wskazany rachunek bankowy.</p>
+      <p>Brak wpłaty zadatku/przedpłaty w&nbsp;ustalonym terminie może skutkować anulowaniem rezerwacji.</p>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§3.</span> Płatności</h2>
+    <div class="body">
+      <p>Aktualny cennik usług dostępny jest na stronie internetowej Gabinetu lub przekazywany jest klientowi przed wizytą.</p>
+      <p>Płatność za usługę następuje:</p>
+      <ul>
+        <li>gotówką,</li>
+        <li>przelewem,</li>
+        <li>przez serwis znanylekarz.pl,</li>
+        <li>BLIKiem lub inną ustaloną formą płatności.</li>
+      </ul>
+      <p>Zadatek lub przedpłata zaliczane są na poczet ceny wizyty.</p>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§4.</span> Odwoływanie i&nbsp;zmiana terminów wizyt</h2>
+    <div class="body">
+      <p>Klient może odwołać lub przełożyć wizytę bez ponoszenia kosztów najpóźniej na 24&nbsp;godziny przed umówionym terminem.</p>
+      <p>Odwołanie wizyty po tym czasie lub niestawienie się na wizycie skutkuje obowiązkiem uiszczenia pełnej opłaty za wizytę lub utratą wpłaconego zadatku.</p>
+      <p>Spóźnienie klienta może skutkować skróceniem czasu sesji bez zmniejszenia opłaty.</p>
+      <p>W&nbsp;przypadku spóźnienia przekraczającego 15&nbsp;minut Gabinet zastrzega sobie możliwość odwołania wizyty.</p>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§5.</span> Zasady świadczenia usług</h2>
+    <div class="body">
+      <p>Gabinet świadczy usługi z&nbsp;należytą starannością, zgodnie z&nbsp;aktualną wiedzą psychologiczną i&nbsp;zasadami etyki zawodowej.</p>
+      <p>Psychoterapia i&nbsp;konsultacje psychologiczne wymagają aktywnego zaangażowania klienta i&nbsp;nie gwarantują osiągnięcia określonych rezultatów.</p>
+      <p>Klient zobowiązuje się do:</p>
+      <ul>
+        <li>punktualnego stawiania się na wizyty,</li>
+        <li>przekazywania istotnych informacji dotyczących swojego stanu psychicznego i&nbsp;zdrowotnego,</li>
+        <li>zachowania zasad wzajemnego szacunku podczas kontaktu z&nbsp;terapeutą.</li>
+      </ul>
+      <p>Gabinet zastrzega sobie prawo odmowy świadczenia usług w&nbsp;przypadku:</p>
+      <ul>
+        <li>pozostawania klienta pod wpływem alkoholu lub substancji psychoaktywnych,</li>
+        <li>zachowań agresywnych lub naruszających granice terapeuty,</li>
+        <li>sytuacji wykraczających poza kompetencje Gabinetu.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§6.</span> Sesje online</h2>
+    <div class="body">
+      <p>Sesje online odbywają się za pośrednictwem ustalonego wcześniej komunikatora.</p>
+      <p>Klient zobowiązany jest do zapewnienia sobie odpowiednich warunków do odbycia sesji, w&nbsp;szczególności:</p>
+      <ul>
+        <li>stabilnego połączenia internetowego,</li>
+        <li>spokojnego i&nbsp;prywatnego miejsca rozmowy.</li>
+      </ul>
+      <p>Gabinet nie ponosi odpowiedzialności za problemy techniczne niezależne od niego.</p>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§7.</span> Poufność</h2>
+    <div class="body">
+      <p>Wszystkie informacje przekazywane podczas konsultacji i&nbsp;psychoterapii objęte są tajemnicą zawodową.</p>
+      <p>Wyjątki od zasady poufności mogą wynikać wyłącznie z&nbsp;obowiązujących przepisów prawa, w&nbsp;szczególności w&nbsp;sytuacji zagrożenia życia lub zdrowia klienta albo innych osób.</p>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§8.</span> Sytuacje nagłe i&nbsp;kryzysowe</h2>
+    <div class="body">
+      <p>Gabinet nie świadczy pomocy interwencyjnej ani całodobowej pomocy kryzysowej.</p>
+      <div class="card">
+        <p>W&nbsp;sytuacji zagrożenia życia lub zdrowia należy skontaktować się z&nbsp;numerem alarmowym <b>112</b> lub zgłosić się do najbliższego szpitalnego oddziału ratunkowego albo centrum interwencji kryzysowej.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§9.</span> Zmiana lub odwołanie wizyty przez Gabinet</h2>
+    <div class="body">
+      <p>W&nbsp;wyjątkowych sytuacjach losowych Gabinet zastrzega sobie prawo do zmiany terminu wizyty.</p>
+      <p>Klient zostanie poinformowany o&nbsp;zmianie możliwie jak najszybciej.</p>
+      <p>W&nbsp;przypadku wcześniejszej wpłaty zadatku klient może:</p>
+      <ul>
+        <li>wykorzystać go przy nowym terminie wizyty,</li>
+        <li>otrzymać jego zwrot.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="block-label">Informacja o&nbsp;przetwarzaniu danych osobowych (RODO)</div>
+
+  <section class="pp" style="border-top:0;margin-top:18px;padding-top:0">
+    <h2><span class="n">§10.</span> Administrator danych</h2>
+    <div class="body">
+      <p>Administratorem danych osobowych jest firma <b>Mindful Psychology Anna Szarek-Bielawska</b>, prowadzona przez Annę Szarek-Bielawską, dalej zwaną „Administratorem".</p>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§11.</span> Cel i&nbsp;podstawa przetwarzania danych</h2>
+    <div class="body">
+      <p>Dane osobowe przetwarzane są w&nbsp;celu:</p>
+      <ul>
+        <li>umówienia i&nbsp;realizacji wizyt,</li>
+        <li>kontaktu z&nbsp;klientem,</li>
+        <li>prowadzenia dokumentacji związanej ze świadczeniem usług,</li>
+        <li>dochodzenia ewentualnych roszczeń.</li>
+      </ul>
+      <p>Podstawą przetwarzania danych są:</p>
+      <ul>
+        <li>art. 6 ust. 1 lit. b RODO – realizacja umowy,</li>
+        <li>art. 6 ust. 1 lit. f RODO – prawnie uzasadniony interes administratora,</li>
+        <li>art. 9 ust. 2 lit. h RODO – świadczenie usług związanych z&nbsp;ochroną zdrowia psychicznego.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§12.</span> Prawa osoby, której dane dotyczą</h2>
+    <div class="body">
+      <p>Klient ma prawo do:</p>
+      <ul>
+        <li>dostępu do swoich danych,</li>
+        <li>sprostowania danych,</li>
+        <li>usunięcia danych,</li>
+        <li>ograniczenia przetwarzania,</li>
+        <li>wniesienia sprzeciwu wobec przetwarzania,</li>
+        <li>wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pp">
+    <h2><span class="n">§13.</span> Postanowienia końcowe</h2>
+    <div class="body">
+      <p>Regulamin wchodzi w&nbsp;życie z&nbsp;dniem publikacji.</p>
+      <p>Gabinet zastrzega sobie prawo do wprowadzania zmian w&nbsp;regulaminie.</p>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="brand"><span class="brand-dot"></span><span style="font-family:var(--serif);font-style:italic;color:var(--navy);margin-left:8px">Souly</span></div>
+  <div>© 2026 · <a href="index.html">strona główna</a> · <a href="Polityka-prywatnosci.html">polityka prywatności</a> · <a href="Regulamin-strony.html">regulamin strony</a> · <a href="#" data-cookie-settings>ustawienia plików cookies</a></div>
+</footer>
+
+<script src="cookie-consent.js"></script>
+
+</body>
+</html>
