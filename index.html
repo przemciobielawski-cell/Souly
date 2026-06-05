@@ -59,6 +59,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
 
 /* ───────── Cinematic video background ───────── */
+/* Lock scrolling while the intro plays (prevents revealing the page beneath) */
+html.intro-lock, body.intro-lock{overflow:hidden !important;height:100%;touch-action:none;overscroll-behavior:none}
 .video-bg{
   position:fixed;inset:0;z-index:0;overflow:hidden;
   background:#0a0d18;
@@ -1031,6 +1033,10 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
   // ── Intro state (declared first so every handler below can use it) ──
   let videoShown = false, tintStarted = false, textShown = false, fallbackTimer = null;
+  // Lock scrolling during the intro so the page underneath can't be revealed
+  // by scrolling before the intro finishes. Released in showText().
+  document.documentElement.classList.add('intro-lock');
+  document.body.classList.add('intro-lock');
   // Hard floor: the page content must NEVER appear before this many ms have
   // elapsed since load — even if 'ended' fires early (e.g. the browser restored
   // a near-end position from cache). This is the definitive guard against the
@@ -1069,6 +1075,9 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
     showVideo();   // make sure the footage is visible first…
     startTint();   // …beige already settling…
     document.body.classList.add('loaded'); // …then reveal the page content
+    // Release the scroll lock now that the page is revealed
+    document.documentElement.classList.remove('intro-lock');
+    document.body.classList.remove('intro-lock');
   };
 
   video.addEventListener('loadedmetadata', () => { setSpeed(); rewind(); });
