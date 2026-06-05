@@ -140,6 +140,7 @@
       + 'font-family:"Mulish",sans-serif;box-shadow:0 16px 34px -16px rgba(20,26,42,.7);transform:translateY(20px);opacity:0;'
       + 'visibility:hidden;transition:all .4s ease}'
       + '.st-fab.show{transform:none;opacity:1;visibility:visible}'
+      + 'body.at-foot .st-fab{opacity:0!important;visibility:hidden!important;transform:translateY(20px)!important;transition:opacity .35s ease,transform .35s ease,visibility 0s linear .35s!important}'
       + '.st-fab:hover{background:#5C6B3C;transform:translateY(-2px)}'
       + '@media(max-width:520px){.st-fab{left:14px;bottom:14px;font-size:12px;padding:11px 15px}}'
       + '@media(prefers-reduced-motion:reduce){.st-overlay,.st-modal,.st-fill,.st-screen,.st-fab,.st-btn,.st-scale button{transition:none!important;animation:none!important}}';

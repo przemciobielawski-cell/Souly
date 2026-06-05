@@ -472,6 +472,15 @@ section, footer { background: transparent }
 .price-card li{display:flex;align-items:flex-start;gap:10px}
 .price-card li::before{content:"";flex:0 0 6px;height:6px;border-radius:50%;background:currentColor;margin-top:8px;opacity:.5}
 .price-card.featured li::before{background:var(--olive)}
+.price-card{text-decoration:none;color:inherit;position:relative}
+.price-card .pc-cta{display:inline-flex;align-items:center;gap:8px;margin-top:6px;
+  font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--beige-300);
+  opacity:.85;transition:gap .25s ease,color .25s ease}
+.price-card.featured .pc-cta{color:var(--olive)}
+.price-card .pc-cta svg{transition:transform .25s ease}
+.price-card:hover .pc-cta{gap:12px}
+.price-card:hover .pc-cta svg{transform:translateX(3px)}
+.price-card:focus-visible{outline:2px solid var(--olive);outline-offset:3px}
 
 /* ───────── Kontakt ───────── */
 .contact{padding-bottom:80px}
@@ -524,6 +533,28 @@ section, footer { background: transparent }
 }
 .field textarea{min-height:120px;resize:vertical;font-family:inherit}
 .field input:focus,.field textarea:focus{outline:none;border-color:var(--olive);background:var(--beige-50)}
+
+/* ───────── Floating booking button (persistent CTA) ───────── */
+.book-fab{
+  position:fixed;right:20px;bottom:20px;z-index:120;
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 20px;border-radius:999px;
+  background:var(--olive);color:var(--beige-50);
+  font-family:var(--sans);font-size:13.5px;font-weight:700;letter-spacing:.01em;
+  border:none;cursor:pointer;text-decoration:none;
+  box-shadow:0 16px 34px -14px rgba(92,107,60,.75);
+  transform:translateY(20px);opacity:0;visibility:hidden;
+  transition:opacity .4s ease, transform .4s ease, background .25s ease, visibility 0s linear .4s;
+}
+body.loaded .book-fab{transform:none;opacity:1;visibility:visible;transition:opacity .5s ease 1.6s, transform .5s ease 1.6s, background .25s ease}
+.book-fab:hover{background:var(--navy);transform:translateY(-2px)}
+.book-fab svg{flex:0 0 16px}
+/* Hide both floating buttons once the footer is in view (avoid covering legal links) */
+body.at-foot .book-fab{opacity:0;visibility:hidden;transform:translateY(20px);transition:opacity .35s ease, transform .35s ease, visibility 0s linear .35s}
+@media(max-width:520px){.book-fab{right:14px;bottom:14px;padding:12px 16px;font-size:12.5px}}
+@media (prefers-reduced-motion: reduce){
+  body.loaded .book-fab{transition:none}
+}
 
 /* ───────── Footer ───────── */
 footer{
@@ -822,7 +853,7 @@ footer{
     </div>
 
     <div class="pricing-grid scroll-reveal stagger">
-      <div class="price-card" style="--i:0">
+      <a href="Rezerwacja.html" class="price-card" style="--i:0">
         <div class="meta">Pierwsze spotkanie</div>
         <div class="name">Konsultacja psychologiczna</div>
         <div class="amount">250<sub>zł / 50 min</sub></div>
@@ -832,8 +863,9 @@ footer{
           <li>Bez zobowiązań — decyzja po spotkaniu</li>
           <li>online lub stacjonarnie (od&nbsp;lipca&nbsp;2026)</li>
         </ul>
-      </div>
-      <div class="price-card featured" style="--i:1">
+        <span class="pc-cta">Umów wizytę <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a href="Rezerwacja.html" class="price-card featured" style="--i:1">
         <div class="meta">Regularne spotkania</div>
         <div class="name">Psychoterapia indywidualna</div>
         <div class="amount">250<sub>zł / 50 min</sub></div>
@@ -843,8 +875,9 @@ footer{
           <li>Częstotliwość: zazwyczaj 1× w&nbsp;tygodniu</li>
           <li>Online lub stacjonarnie</li>
         </ul>
-      </div>
-      <div class="price-card" style="--i:2">
+        <span class="pc-cta">Umów wizytę <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a href="Rezerwacja.html" class="price-card" style="--i:2">
         <div class="meta">Diagnoza</div>
         <div class="name">Badania psychologiczne</div>
         <div class="amount" style="font-size:36px">cena indywidualna</div>
@@ -854,7 +887,8 @@ footer{
           <li>Pisemna opinia psychologiczna</li>
           <li>Zakres dopasowany do celu badania</li>
         </ul>
-      </div>
+        <span class="pc-cta">Zapytaj o&nbsp;termin <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
@@ -870,14 +904,14 @@ footer{
 
     <div class="contact-wrap">
       <div class="contact-card scroll-reveal">
-        <a href="tel:+48787932000">
+        <a href="tel:+48788056459">
           <div class="contact-row">
             <div class="ic">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.35 1.85.6 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
             </div>
             <div>
               <div class="lbl">Telefon</div>
-              <div class="val">+48 787 932 000</div>
+              <div class="val">+48 788 056 459</div>
             </div>
           </div>
         </a>
@@ -970,6 +1004,11 @@ footer{
   </div>
 </footer>
 
+<a href="Rezerwacja.html" class="book-fab" aria-label="Umów wizytę">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+  Umów wizytę
+</a>
+
 <script src="cookie-consent.js"></script>
 <script src="self-test.js"></script>
 
@@ -990,27 +1029,27 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   const videoBg = document.getElementById('videoBg');
   const video = document.getElementById('bgVideo');
 
-  // Slow the video down slightly (cinematic feel)
-  const setSpeed = (rate) => { try { video.playbackRate = rate; } catch(e){} };
-  setSpeed(window.__currentVideoSpeed || 0.85);
-  video.addEventListener('loadedmetadata', () => setSpeed(window.__currentVideoSpeed || 0.85));
-  video.addEventListener('play', () => setSpeed(window.__currentVideoSpeed || 0.85));
+  // ── Intro state (declared first so every handler below can use it) ──
+  let videoShown = false, tintStarted = false, textShown = false, fallbackTimer = null;
+  // Hard floor: the page content must NEVER appear before this many ms have
+  // elapsed since load — even if 'ended' fires early (e.g. the browser restored
+  // a near-end position from cache). This is the definitive guard against the
+  // "text flashes before the intro" glitch.
+  const MIN_INTRO_MS = 4200;
+  const introStart = (performance && performance.now) ? performance.now() : Date.now();
+  const elapsed = () => ((performance && performance.now) ? performance.now() : Date.now()) - introStart;
 
-  // Reveal video as soon as it can play; fall back after 800ms.
-  let videoShown = false;
-  const showVideo = () => {
-    if (videoShown) return;
-    videoShown = true;
-    videoBg.classList.add('ready');
-  };
-  video.addEventListener('canplay', showVideo, {once:true});
-  video.addEventListener('playing', showVideo, {once:true});
-  setTimeout(showVideo, 800);
+  const getRate = () => window.__currentVideoSpeed || 0.85;
+  const setSpeed = () => { try { video.playbackRate = getRate(); } catch(e){} };
+  setSpeed();
 
-  // Intro sequence — the beige background starts fading in DURING the video
-  // (around its midpoint) so the transition overlaps with the camera motion
-  // and feels seamless, rather than starting only once the footage freezes.
-  let tintStarted = false, textShown = false;
+  // Always start the clip from the very beginning. Guards against the browser
+  // restoring a previous (near-end) position on reload / bfcache restore, which
+  // would otherwise fire 'ended' immediately and flash the text BEFORE the intro.
+  const rewind = () => { try { if (video.currentTime > 0.1) video.currentTime = 0; } catch(e){} };
+
+  const showVideo = () => { if (videoShown) return; videoShown = true; videoBg.classList.add('ready'); };
+
   const startTint = () => {
     if (tintStarted) return;
     tintStarted = true;
@@ -1018,18 +1057,49 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   };
   const showText = () => {
     if (textShown) return;
+    // Enforce the minimum intro duration: if something tries to reveal the
+    // text too early, defer it until the floor has been reached instead.
+    const remaining = MIN_INTRO_MS - elapsed();
+    if (remaining > 0) {
+      startTint(); // let the beige begin settling while we wait
+      setTimeout(showText, remaining + 20);
+      return;
+    }
     textShown = true;
-    startTint();
-    document.body.classList.add('loaded'); // reveal the page content
+    showVideo();   // make sure the footage is visible first…
+    startTint();   // …beige already settling…
+    document.body.classList.add('loaded'); // …then reveal the page content
   };
 
-  // Begin the beige fade once ~45% of the clip has played.
+  video.addEventListener('loadedmetadata', () => { setSpeed(); rewind(); });
+  video.addEventListener('play', setSpeed);
+  // Back/forward & some reloads restore from bfcache — restart the intro cleanly.
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted && !textShown) { rewind(); video.play().catch(()=>{}); }
+  });
+
+  // Reveal the video as soon as it can play; fall back after 800ms.
+  video.addEventListener('canplay', showVideo, {once:true});
+  video.addEventListener('playing', showVideo, {once:true});
+  setTimeout(showVideo, 800);
+
+  // Beige fade begins once ~38% of the clip has played; also arm a fallback
+  // timer derived from the REAL remaining time, in case 'ended' is missed.
   video.addEventListener('timeupdate', () => {
     if (!video.duration) return;
     if (video.currentTime / video.duration >= 0.38) startTint();
+    if (!fallbackTimer && video.currentTime > 0.15) {
+      const remainingMs = ((video.duration - video.currentTime) / getRate()) * 1000 + 400;
+      fallbackTimer = setTimeout(showText, Math.min(Math.max(remainingMs, 800), 13000));
+    }
   });
-  // Reveal the text when the video finishes (beige is already settled by then).
+  // Reveal the text when the clip finishes (beige is already settled by then).
   video.addEventListener('ended', showText, {once:true});
+
+  // Kick playback off explicitly; if autoplay is blocked, reveal gracefully.
+  rewind();
+  const pp = video.play();
+  if (pp && pp.catch) pp.catch(() => { startTint(); setTimeout(showText, 1200); });
 
   // Safety fallbacks: never leave the user on a blank/frozen frame.
   video.addEventListener('error', () => { startTint(); setTimeout(showText, 600); }, {once:true});
@@ -1042,6 +1112,18 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   };
   document.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
+
+  // Hide floating buttons when the footer comes into view (so they don't
+  // cover the legal links / "wróć na górę"). Toggles body.at-foot.
+  const footEl = document.querySelector('footer');
+  if (footEl && 'IntersectionObserver' in window) {
+    const footIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        document.body.classList.toggle('at-foot', e.isIntersecting);
+      });
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0 });
+    footIO.observe(footEl);
+  }
 
   // Scroll reveals
   const io = new IntersectionObserver((entries) => {
