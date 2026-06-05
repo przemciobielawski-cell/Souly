@@ -10,7 +10,7 @@
 //  (baner działa, ale nie uruchamia żadnych skryptów zewnętrznych).
 // ════════════════════════════════════════════════════════════════════
 (function () {
-  var GA_ID = "G-XXXXXXXXXX";              // ← wstaw swój identyfikator GA4
+  var GA_ID = "G-83MPZPSR41";               // ← identyfikator GA4 (Souly)
   var STORE_KEY = "souly_cookie_consent";   // 'all' | 'essential'
   var POLICY_URL = "Polityka-prywatnosci.html";
 
