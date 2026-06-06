@@ -19,18 +19,12 @@
 
   // ---- Google Analytics (ładowane tylko po zgodzie) ----
   function loadGA() {
-    if (!GA_ID || GA_ID.indexOf("G-XXXX") === 0) return; // brak realnego ID — nic nie ładuj
-    if (window.__souly_ga_loaded) return;
-    window.__souly_ga_loaded = true;
-    var s = document.createElement("script");
-    s.async = true;
-    s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { window.dataLayer.push(arguments); }
-    window.gtag = gtag;
-    gtag("js", new Date());
-    gtag("config", GA_ID, { anonymize_ip: true });
+    // Google tag jest już wczytany (google-tag.js w <head>) z domyślną zgodą
+    // „denied”. Tutaj — po akceptacji — podnosimy zgodę przez Consent Mode v2,
+    // co aktywuje pomiar (cookies + zdarzenia).
+    if (typeof window.gtag === "function") {
+      window.gtag("consent", "update", { analytics_storage: "granted" });
+    }
   }
 
   // ---- styles ----
