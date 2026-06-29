@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+<meta name="theme-color" content="#1F2A44" />
+<title>Souly — Umów wizytę</title>
+<script src="google-tag.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --beige-50:#F7F1E3; --beige-100:#EFE6D2; --beige-200:#E4D7BC; --beige-300:#D6C5A2;
+  --beige-line:rgba(31,42,68,.12);
+  --olive:#5C6B3C; --olive-soft:#8A9667; --navy:#1F2A44; --navy-soft:#3A4666;
+  --ink:#1B2235; --muted:rgba(27,34,53,.62);
+  --serif:"Bodoni Moda","Times New Roman",serif;
+  --sans:"Mulish",ui-sans-serif,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--beige-50);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:var(--olive);color:var(--beige-50)}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+  padding:18px clamp(20px,4vw,48px);background:rgba(247,241,227,.9);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--beige-line)}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-size:26px;font-style:italic;color:var(--navy)}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--olive);box-shadow:0 0 0 4px rgba(92,107,60,.12)}
+.back{font-size:13.5px;color:var(--navy-soft);display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;transition:background .2s}
+.back:hover{background:var(--beige-200)}
+
+/* page */
+.wrap{max-width:1080px;margin:0 auto;padding:clamp(32px,5vw,64px) clamp(20px,4vw,48px)}
+.head{text-align:center;max-width:680px;margin:0 auto clamp(32px,4vw,48px)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11.5px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--olive);margin-bottom:18px}
+.eyebrow::before,.eyebrow::after{content:"";width:28px;height:1px;background:var(--olive)}
+.head h1{font-family:var(--serif);font-weight:400;font-size:clamp(34px,5vw,56px);line-height:1.06;color:var(--navy)}
+.head h1 .it{font-style:italic;color:var(--olive)}
+.head p{font-size:clamp(15px,1.3vw,17px);color:var(--muted);margin-top:18px;line-height:1.7}
+
+/* therapist toggle */
+.picker{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:30px}
+.tcard{display:flex;align-items:center;gap:13px;padding:11px 20px 11px 11px;border-radius:999px;border:1px solid var(--beige-line);
+  background:#fff;transition:all .2s ease;cursor:pointer}
+.tcard img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.tcard .tt{display:flex;flex-direction:column;gap:1px;text-align:left}
+.tcard .tn{font-size:15px;font-weight:600;color:var(--navy);line-height:1.1}
+.tcard .tr{font-size:11.5px;color:var(--muted)}
+.tcard.active{border-color:var(--olive);box-shadow:0 0 0 1px var(--olive)}
+.tcard:not(.active):hover{border-color:var(--olive-soft);transform:translateY(-1px)}
+
+/* cal container */
+.cal-stage{position:relative;min-height:640px;background:#fff;border:1px solid var(--beige-line);
+  border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -40px rgba(31,42,68,.3)}
+.cal-frame{width:100%;min-height:640px}
+.cal-frame[hidden]{display:none}
+.frame-note{min-height:640px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:18px;padding:40px;color:var(--muted)}
+.frame-note svg{color:var(--olive-soft)}
+.frame-note p{font-size:15px;line-height:1.7;max-width:420px}
+.frame-note a{color:var(--olive);text-decoration:underline;text-underline-offset:2px}
+
+/* setup overlay (shown until a real Cal.com link is configured) */
+.setup{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:32px;background:var(--beige-100)}
+.setup-card{max-width:560px;text-align:left;background:#fff;border:1px solid var(--beige-line);border-radius:18px;padding:36px}
+.setup-card .badge{width:54px;height:54px;border-radius:50%;background:rgba(92,107,60,.14);color:var(--olive);
+  display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.setup-card h2{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--navy);line-height:1.12;margin-bottom:10px}
+.setup-card p{font-size:14.5px;color:var(--muted);line-height:1.7;margin-bottom:18px}
+.setup-card ol{margin:0 0 20px 0;padding-left:20px;display:flex;flex-direction:column;gap:11px}
+.setup-card li{font-size:14.5px;color:var(--navy);line-height:1.6}
+.setup-card code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;background:var(--beige-100);
+  border:1px solid var(--beige-line);border-radius:6px;padding:2px 7px;color:var(--olive)}
+.setup-card a.cta{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:11px;
+  background:var(--navy);color:var(--beige-50);font-size:14px;font-weight:600;transition:all .2s}
+.setup-card a.cta:hover{background:var(--olive);transform:translateY(-1px)}
+
+.note{text-align:center;font-size:13px;color:var(--muted);margin-top:22px;line-height:1.6}
+.note a{color:var(--olive);text-decoration:underline;text-underline-offset:2px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="brand"><span class="brand-dot"></span><span>Souly</span></a>
+  <a href="index.html" class="back">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    Powrót na stronę
+  </a>
+</div>
+
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Rezerwacja online</div>
+    <h1>Umów wizytę w&nbsp;<span class="it">dogodnym terminie</span></h1>
+    <p>Wybierz specjalistkę i&nbsp;wolny termin w&nbsp;kalendarzu.<br/>Po rezerwacji otrzymasz potwierdzenie i&nbsp;przypomnienie na podany adres e-mail.<br/>Wizyty stacjonarne dostępne od&nbsp;lipca&nbsp;2026 — wcześniej możliwe są tylko wizyty online.</p>
+  </div>
+
+  <div class="picker" id="picker">
+    <button class="tcard active" data-who="anna">
+      <img src="assets/team-anna.png" alt="Anna Szarek-Bielawska" />
+      <span class="tt"><span class="tn">Anna Szarek-Bielawska</span><span class="tr">Psycholożka · psychoterapeutka</span></span>
+    </button>
+    <button class="tcard" data-who="agnieszka">
+      <img src="assets/team-agnieszka.png" alt="Agnieszka Stelmach" />
+      <span class="tt"><span class="tn">Agnieszka Stelmach</span><span class="tr">Konsultacje dla rodziców</span></span>
+    </button>
+  </div>
+
+  <div class="cal-stage" id="calStage">
+    <div class="cal-frame" id="cal-anna"></div>
+    <div class="cal-frame" id="cal-agnieszka" hidden></div>
+
+    <!-- Setup overlay — automatically hidden once real Cal.com links are set below -->
+    <div class="setup" id="setup">
+      <div class="setup-card">
+        <div class="badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <h2>Połącz kalendarz Cal.com</h2>
+        <p>Kalendarz rezerwacji jest gotowy do podłączenia. Aby go uruchomić, wklej swoje linki z&nbsp;Cal.com w&nbsp;pliku <code>Rezerwacja.html</code>:</p>
+        <ol>
+          <li>Załóż konto na <a href="https://cal.com" target="_blank" rel="noopener" style="color:var(--olive);text-decoration:underline">cal.com</a> i&nbsp;utwórz typ spotkania (np. „Konsultacja 50 min").</li>
+          <li>Skopiuj swój link, np. <code>souly/konsultacja</code> (część po <code>cal.com/</code>).</li>
+          <li>W pliku <code>Rezerwacja.html</code> znajdź sekcję <code>CAL</code> i&nbsp;wpisz linki dla obu specjalistek w&nbsp;miejsce <code>WSTAW-LINK</code>.</li>
+          <li>Gotowe — kalendarz pojawi się tutaj automatycznie, ostylowany pod markę Souly.</li>
+        </ol>
+        <a class="cta" href="https://cal.com/event-types" target="_blank" rel="noopener">
+          Otwórz Cal.com
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">Masz pytania przed rezerwacją? Napisz na <a href="mailto:kontakt@souly-psychoterapia.pl">kontakt@souly-psychoterapia.pl</a> lub zadzwoń <a href="tel:+48788056459">+48 788 056 459</a>.<br/><a href="Polityka-prywatnosci.html">Polityka prywatności</a> · <a href="Regulamin.html">Regulamin świadczenia usług</a> · <a href="Regulamin-strony.html">Regulamin strony</a> · <a href="#" data-cookie-settings>Ustawienia plików cookies</a></p>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     KONFIGURACJA CAL.COM
+     Wpisz poniżej swoje linki (część adresu po "cal.com/").
+     Przykład: jeśli Twój link to https://cal.com/souly/konsultacja,
+     wpisujesz:  anna: "souly/konsultacja"
+     Dopóki widnieje tu "WSTAW-LINK", strona pokazuje instrukcję konfiguracji.
+     ════════════════════════════════════════════════════════════════════ -->
+<script>
+const CAL = {
+  anna:      "anna-szarek-bielawska-voov4l",   // ← link Anny
+  agnieszka: "WSTAW-LINK",   // np. "souly/konsultacja-rodzice" ← link Agnieszki
+  origin:    "https://cal.com",
+  brand:     "#5C6B3C",      // kolor akcentu (oliwka Souly)
+};
+</script>
+
+<!-- Cal.com embed loader (oficjalny) -->
+<script type="text/javascript">
+(function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+</script>
+
+<script>
+(function(){
+  const isConfigured = (link) => link && link !== "WSTAW-LINK";
+  const anyConfigured = isConfigured(CAL.anna) || isConfigured(CAL.agnieszka);
+  const setup = document.getElementById('setup');
+  const picker = document.getElementById('picker');
+  const mounted = {};
+
+  function mount(who){
+    const link = CAL[who];
+    if (!isConfigured(link) || mounted[who]) return;
+    mounted[who] = true;
+    // init a namespace per therapist so each has its own calendar
+    Cal("init", who, { origin: CAL.origin });
+    Cal.ns[who]("inline", {
+      elementOrSelector: "#cal-" + who,
+      calLink: link,
+      layout: "month_view",
+    });
+    Cal.ns[who]("ui", {
+      cssVarsPerTheme: { light: { "cal-brand": CAL.brand } },
+      hideEventTypeDetails: false,
+      layout: "month_view",
+    });
+  }
+
+  function show(who){
+    document.querySelectorAll('.tcard').forEach(b => b.classList.toggle('active', b.dataset.who === who));
+    document.getElementById('cal-anna').hidden = (who !== 'anna');
+    document.getElementById('cal-agnieszka').hidden = (who !== 'agnieszka');
+    if (isConfigured(CAL[who])) {
+      mount(who);
+    } else {
+      // Therapist has no Cal.com link yet — show a friendly note instead of a blank frame
+      const frame = document.getElementById('cal-' + who);
+      if (frame && !frame.dataset.noted) {
+        frame.dataset.noted = "1";
+        frame.innerHTML = '<div class="frame-note">'
+          + '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'
+          + '<p>Kalendarz tej specjalistki będzie dostępny wkrótce.<br>W razie pytań napisz na <a href="mailto:kontakt@souly-psychoterapia.pl">kontakt@souly-psychoterapia.pl</a> lub zadzwoń <a href="tel:+48788056459">+48&nbsp;788&nbsp;056&nbsp;459</a>.</p>'
+          + '</div>';
+      }
+    }
+  }
+
+  picker.addEventListener('click', (e) => {
+    const btn = e.target.closest('.tcard');
+    if (btn) show(btn.dataset.who);
+  });
+
+  if (anyConfigured) {
+    setup.style.display = 'none';
+    mount('anna'); // preload the default therapist's calendar
+  }
+  // else: leave the setup overlay visible
+})();
+</script>
+
+<script src="cookie-consent.js"></script>
+
+</body>
+</html>
