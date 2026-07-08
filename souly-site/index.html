@@ -363,6 +363,15 @@ section, footer { background: transparent }
   margin-top:70px;
 }
 @media(max-width:860px){.team-grid{grid-template-columns:1fr}}
+/* Lone third card in a 2-col grid → center it */
+.team-card:last-child:nth-child(odd){grid-column:1 / -1;justify-self:center;max-width:calc(50% - clamp(14px,2vw,28px))}
+@media(max-width:860px){.team-card:last-child:nth-child(odd){max-width:none}}
+/* Placeholder photo (until real portrait is provided) */
+.team-photo.placeholder{display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,var(--beige-200),var(--beige-300));
+  color:var(--navy-soft)}
+.team-photo.placeholder .ph-txt{font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.6;text-align:center;line-height:1.7}
 .team-card{
   background:var(--paper);border:1px solid var(--beige-line);
   border-radius:24px;overflow:hidden;display:flex;flex-direction:column;
@@ -783,6 +792,38 @@ footer{
             <span class="team-tag">Rodzicielstwo bliskości</span>
             <span class="team-tag">Montessori</span>
             <span class="team-tag">NVC</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="team-card" style="--i:2">
+        <div class="team-photo">
+          <img src="assets/team-kasia.png" alt="Katarzyna Falacińska — psycholożka, psychoterapeutka w trakcie szkolenia" loading="lazy"/>
+        </div>
+        <div class="team-body">
+          <div class="team-role">Psycholożka · Psychoterapeutka w&nbsp;trakcie szkolenia</div>
+          <h3 class="team-name">Katarzyna Falacińska</h3>
+          <p class="team-bio">
+            Jestem psycholożką, ukończyłam jednolite studia magisterskie na
+            Uniwersytecie SWPS w&nbsp;Warszawie. Aktualnie realizuję czteroletnie
+            szkolenie psychoterapeutyczne w&nbsp;Szkole Psychoterapii
+            Poznawczo-Behawioralnej Uniwersytetu SWPS w&nbsp;Warszawie.
+            Doświadczenie zawodowe zdobywałam na praktykach i&nbsp;stażach
+            w&nbsp;Instytucie Psychiatrii i&nbsp;Neurologii w&nbsp;Warszawie oraz
+            w&nbsp;Mazowieckim Specjalistycznym Centrum Zdrowia w&nbsp;Pruszkowie.
+            <br/><br/>
+            Oferuję wsparcie psychologiczne osobom dorosłym doświadczającym
+            lęku, obniżonej motywacji do działania, obniżonego nastroju,
+            trudnych myśli i&nbsp;emocji wpływających na jakość codziennego
+            życia. Wspieram w&nbsp;rozpoznawaniu trudności i&nbsp;zasobów oraz
+            w&nbsp;budowaniu i&nbsp;rozwijaniu skutecznych sposobów radzenia
+            sobie z&nbsp;wyzwaniami.
+          </p>
+          <div class="team-tags">
+            <span class="team-tag">Dorośli</span>
+            <span class="team-tag">Lęk</span>
+            <span class="team-tag">Obniżony nastrój</span>
+            <span class="team-tag">CBT</span>
           </div>
         </div>
       </article>
